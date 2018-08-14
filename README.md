@@ -1,6 +1,6 @@
 # Name of project
 
-Giphy: The webpage allows you to add new animals to page.  If you click on an animal, it will use the giphy to add animals to the website.  Additionally if you click on an image it will set it to still and animate.  
+Load Images Using AJAX API : The webpage allows you to add new animals to page.  If you click on an animal, it will use the giphy to add animals to the website.  Additionally if you click on an image it will set it to still and animate.  
 
 # Link to the site
 
@@ -12,10 +12,10 @@ Giphy: The webpage allows you to add new animals to page.  If you click on an an
 
 # Technologies used
 
-HTML
-CSS
-Javascript
-Jquery
+HTML,
+CSS,
+Javascript,
+Jquery,
 AJAX
 
 
