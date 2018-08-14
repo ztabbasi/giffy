@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Animals</title>
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <link rel="stylesheet" href="assets/css/style.css"> 
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Animal Search</h1>
+
+    <form id="animal-form">
+      <label for="animal-input">Add an Animal</label>
+      <input type="text" id="animal-input">
+      <br>
+
+      <!-- Button triggers new animal to be added -->
+      <input id="add-animal" type="submit" value="Add an Animal">
+    </form>
+    <!-- Rendered Buttons will get Dumped Here  -->
+    <div id="buttons-view"></div>
+
+    <!-- Movies will Get Dumped Dere -->
+    <div id="animals-view"></div>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      // Initial array of animals
+      var animals = ["Cat", "Dog", "Elephant", "Butterfly"];
+
+      // displayMovieInfo function re-renders the HTML to display the appropriate content
+      function displayAnimalInfo() {
+
+
+        var animal = $(this).attr("data-name");
+        // var queryURL = "https://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+          animal + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+        //console.log("I am here 1");
+        //console.log("queryURL = " + queryURL);
+
+        // Creating an AJAX call for the specific movie button being clicked
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).then(function (response) {
+          // console.log("I am here in ajax", response);
+          for (var i = 0; i < 10; i++) {
+            // Creating a div to hold the animal
+            var animalDiv = $("<div class='animal'>");
+// <!-- 
+//             console.log("hello", response.data[i].images.downsized.url); -->
+            //console.log("hello", response.data[i].images.fixed_height_still.url);
+
+            // Retrieving the URL for the image
+            var imgActive = response.data[i].images.fixed_height.url;
+            var imgStill = response.data[i].images.fixed_height_still.url;
+            // Creating an element to hold the image
+            var image = $("<img>");
+            
+            image.attr("src", imgActive);
+            image.addClass("giff");
+            
+            image.attr("data-animate", response.data[i].images.fixed_height.url);
+            image.attr("data-still", response.data[i].images.fixed_height_still.url);
+            image.attr("data-state","still");
+            // Appending the image
+            animalDiv.append(image);
+            console.log(response.data[i].rating);
+            animalDiv.append("<br>" + "RATING : " + response.data[i].rating);
+      
+
+            // Putting the animal above the previous animals
+            $("#animals-view").prepend(animalDiv);
+          }
+        });
+      }
+
+
+      // Function for displaying movie data
+      function renderButtons() {
+
+        // Deleting the movies prior to adding new movies
+        // (this is necessary otherwise you will have repeat buttons)
+        $("#buttons-view").empty();
+
+        // Looping through the array of movies
+        for (var i = 0; i < animals.length; i++) {
+
+          // Then dynamicaly generating buttons for each movie in the array
+          // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
+          var newButton = $("<button>");
+          // Adding a class of movie-btn to our button
+          newButton.addClass("animal-btn");
+          // Adding a data-attribute
+          newButton.attr("data-name", animals[i]);
+          // Providing the initial button text
+          newButton.text(animals[i]);
+          // Adding the button to the buttons-view div
+          $("#buttons-view").append(newButton);
+        }
+      }
+
+      // This function handles events where a movie button is clicked
+      $("#add-animal").on("click", function (event) {
+        event.preventDefault();
+        // This line grabs the input from the textbox
+        var animal = $("#animal-input").val().trim();
+
+        // Adding movie from the textbox to our array
+        animals.push(animal);
+
+        // Calling renderButtons which handles the processing of our movie array
+        renderButtons();
+      });
+
+      // Adding a click event listener to all elements with a class of "movie-btn"
+      $(document).on("click", ".animal-btn", displayAnimalInfo);
+
+      // Calling the renderButtons function to display the intial buttons
+      renderButtons();
+      $(document).on("click", ".giff", function() {
+        var changeState = $(this).attr("data-state");
+        
+        if (changeState === "still") {
+          //LINK
+          $(this).attr("src", $(this).attr("data-animate"));
+          //ATTRIBUTE
+          $(this).attr("data-state", "animate"); 
+        } else { 
+          $(this).attr("src", $(this).attr("data-still"));
+          $(this).attr("data-state", "still");
+        } 
+      })
+    </script>
+  </div>
+</body>
+
+</html>
