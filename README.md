@@ -8,7 +8,7 @@ Giphy: The webpage allows you to add new animals to page.  If you click on an an
 
 # Images
 
-![Picture](assets/images/Animals.png)
+![Picture](assets/images/Animals.PNG)
 
 # Technologies used
 
